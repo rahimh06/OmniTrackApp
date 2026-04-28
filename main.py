@@ -28,7 +28,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from supabase import create_client, Client
-import google.generativeai as genai
+from google import genai
 
 # ── Environment ─────────────────────────────────────────────────
 load_dotenv()
@@ -46,8 +46,7 @@ if not GEMINI_KEY:
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # ── Gemini client ────────────────────────────────────────────────
-genai.configure(api_key=GEMINI_KEY)
-model = genai.GenerativeModel("gemini-2.0-flash")
+client = genai.Client(api_key=GEMINI_KEY)
 
 # ── FastAPI app ──────────────────────────────────────────────────
 app = FastAPI(title="OmniTrack AI API", version="2.1.0")
@@ -428,9 +427,11 @@ QUESTION: "{req.user_query}"
 SQL:"""
 
     try:
-        response      = model.generate_content(prompt)
-        raw_output    = response.text.strip()
-
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=prompt
+        )
+        raw_output = response.text
         # Remove accidental markdown fences Gemini sometimes adds
         cleaned = re.sub(r"```(?:sql)?", "", raw_output, flags=re.IGNORECASE).strip()
         # Strip trailing semicolon (Supabase RPC handles it)
