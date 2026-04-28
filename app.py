@@ -18,7 +18,7 @@ load_dotenv()
 # ================================================================
 # CONFIGURATION
 # ================================================================
-BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000").rstrip("/")
+BACKEND_URL = "https://omnitrackapp.onrender.com"
 TEACHER_PASSWORD = os.getenv("TEACHER_PASSWORD", "admin123")
 
 st.set_page_config(
