@@ -48,7 +48,7 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # ── Gemini client ────────────────────────────────────────────────
 genai.configure(api_key=GEMINI_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel('gemini-2.5-flash-lite')
 # ── FastAPI app ──────────────────────────────────────────────────
 app = FastAPI(title="OmniTrack AI API", version="2.1.0")
 
